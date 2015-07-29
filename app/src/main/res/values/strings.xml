@@ -28,14 +28,20 @@
     <string name="origin">Origin</string>
     <string name="destination">Destination</string>
 
-    <string name ="choose_date">Choose date</string>
+    <string name ="choose_date">Date</string>
     <string name ="button_Date_choosen">Date choosen</string>
+    <string name ="choose_company">Company</string>
+    <string name ="button_Company_choosen">Company choosen</string>
     <string name ="choose_time">Time</string>
     <string name ="button_Time_choosen">Time choosen</string>
     <string name ="bus_type">Bus Type</string>
     <string name ="button_bustype_choosen">Bus type choosen &amp; Number</string>
+    <string name ="quantity_passagges">Quantity of passagges</string>
+    <string name ="button_quantity_passagges">Quantity choosen</string>
     <string name ="button_price">Price</string>
     <string name ="button_continue">Continue</string>
+    <string name ="button_origin">Origin cities</string>
+    <string name ="button_destination">Destination cities</string>
 
 
 </resources>

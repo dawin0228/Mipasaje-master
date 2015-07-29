@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity{
         m_btnLogin.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v)
             {
-                startActivity(new Intent(context, chooseCompanyActivity.class));
+                startActivity(new Intent(context, ReserveActivity.class));
             }
         });
     }

@@ -1,37 +1,50 @@
 package gsc.com.mipasaje;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
-public class ReserveActivity extends AppCompatActivity {
+public class ReserveActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Context context = null;
-    private String m_companyString = null;
-    private TextView m_lbCompanyName = null;
-    private Spinner m_spOrigin = null;
-    private Spinner m_spDestination = null;
+    private Button m_btnOrigin = null;
+    private Button m_btnDestination = null;
     private  Button m_btnContinue = null;
     private  Button m_btnDateChoose = null;
     private Button m_btnTimeChoose = null;
+    private Button m_btnCompanyChoose = null;
+    private Button m_btnQuantity = null;
 
     private DatePickerDialog m_DatePicker = null;
     private TimePickerDialog m_TimePicker = null;
+
+    private Dialog dialog = null;
+    private ListView listview = null;
+
+    String m_companyNames[] = {"company1", "company2", "company3", "company n"};
+    String m_originCities[] = {"city1", "city2", "city3", "city n"};
+    String m_destinationCities[] = {"city1", "city2", "city3", "city n"};
+    String m_quantity[] = {"1", "2", "3", "n"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,32 +53,36 @@ public class ReserveActivity extends AppCompatActivity {
 
         context = this;
 
-        Intent intent = getIntent();
-        m_companyString = intent.getStringExtra("companyname");
+        getUIObject();
+        getOtherObject();
+    }
 
-        m_lbCompanyName = (TextView) findViewById(R.id.lb_company_name);
-        m_lbCompanyName.setText(m_companyString);
+    private void getUIObject()
+    {
+        m_btnOrigin = (Button) findViewById(R.id.btn_origin);
+        m_btnOrigin.setOnClickListener(this);
 
-        m_spOrigin = (Spinner) findViewById(R.id.sp_origin);
-        ArrayAdapter<CharSequence> originAdapter = ArrayAdapter.createFromResource(this,
-                R.array.cities_array, android.R.layout.simple_spinner_item);
-        originAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        m_spOrigin.setAdapter(originAdapter);
+        m_btnDestination = (Button) findViewById(R.id.btn_destination);
+        m_btnDestination.setOnClickListener(this);
 
-        m_spDestination = (Spinner) findViewById(R.id.sp_destination);
-        ArrayAdapter<CharSequence> destinationAdapter = ArrayAdapter.createFromResource(this,
-                R.array.cities_array, android.R.layout.simple_spinner_item);
-        destinationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        m_spDestination.setAdapter(destinationAdapter);
+        m_btnQuantity = (Button) findViewById(R.id.btn_quantity_passagges);
+        m_btnQuantity.setOnClickListener(this);
 
         m_btnContinue = (Button) findViewById(R.id.btn_continue);
-        m_btnContinue.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v)
-            {
-                startActivity(new Intent(context, BusLayoutActivity.class));
-            }
-        });
+        m_btnContinue.setOnClickListener(this);
 
+        m_btnDateChoose = (Button) findViewById(R.id.btn_date_choose);
+        m_btnDateChoose.setOnClickListener(this);
+
+        m_btnTimeChoose = (Button) findViewById(R.id.btn_time_choose);
+        m_btnTimeChoose.setOnClickListener(this);
+
+        m_btnCompanyChoose = (Button) findViewById(R.id.btn_company_choose);
+        m_btnCompanyChoose.setOnClickListener(this);
+    }
+
+    private void getOtherObject()
+    {
         Calendar newCalendar = Calendar.getInstance();
         m_DatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -84,22 +101,95 @@ public class ReserveActivity extends AppCompatActivity {
             }
         }, newCalendar.get(Calendar.HOUR_OF_DAY), newCalendar.get(Calendar.MINUTE), true);
 
-        m_btnDateChoose = (Button) findViewById(R.id.btn_date_choose);
-        m_btnDateChoose.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v)
-            {
-                m_DatePicker.show();
-            }
-        });
+    }
 
-        m_btnTimeChoose = (Button) findViewById(R.id.btn_time_choose);
-        m_btnTimeChoose.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v)
-            {
-                m_TimePicker.show();
-            }
-        });
+    @Override
+    public void onClick(View view)
+    {
+        if(view == m_btnContinue)
+        {
+            startActivity(new Intent(context, BusLayoutActivity.class));
+        }
+        if(view == m_btnDateChoose)
+        {
+            m_DatePicker.show();
+        }
+        if(view == m_btnTimeChoose)
+        {
+            m_TimePicker.show();
+        }
+        if(view == m_btnCompanyChoose)
+        {
+            listview = new ListView(this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,m_companyNames);
+            listview.setAdapter(adapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    dialog.dismiss();
+                    m_btnCompanyChoose.setText(((TextView) view).getText());
+                }
+            });
 
+            dialog = new Dialog(this);
+            dialog.setContentView(listview);
+            dialog.setTitle("Companies");
+            dialog.show();
+        }
+        if(view == m_btnOrigin)
+        {
+            listview = new ListView(this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, m_originCities);
+            listview.setAdapter(adapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    dialog.dismiss();
+                    m_btnOrigin.setText(((TextView) view).getText());
+                }
+            });
+
+            dialog = new Dialog(this);
+            dialog.setContentView(listview);
+            dialog.setTitle("Companies");
+            dialog.show();
+        }
+        if(view == m_btnDestination)
+        {
+            listview = new ListView(this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,m_destinationCities);
+            listview.setAdapter(adapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    dialog.dismiss();
+                    m_btnDestination.setText(((TextView) view).getText());
+                }
+            });
+
+            dialog = new Dialog(this);
+            dialog.setContentView(listview);
+            dialog.setTitle("Companies");
+            dialog.show();
+        }
+        if(view == m_btnQuantity)
+        {
+            listview = new ListView(this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,m_quantity);
+            listview.setAdapter(adapter);
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    dialog.dismiss();
+                    m_btnQuantity.setText(((TextView) view).getText());
+                }
+            });
+
+            dialog = new Dialog(this);
+            dialog.setContentView(listview);
+            dialog.setTitle("Companies");
+            dialog.show();
+        }
     }
 
 //    @Override

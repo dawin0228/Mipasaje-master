@@ -19,11 +19,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".chooseCompanyActivity"
-            android:label="@string/title_activity_choose_company"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name=".ReserveActivity"
             android:label="@string/title_activity_reserve"
             android:screenOrientation="portrait" >

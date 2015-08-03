@@ -48,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_signup"
+        android:background="@drawable/selector_orange_btn"
         android:id="@+id/btn_signup"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tf_repassword"

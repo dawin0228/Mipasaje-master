@@ -1,6 +1,5 @@
 package gsc.com.mipasaje;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -8,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -26,7 +22,7 @@ import java.util.Calendar;
 
 public class ReserveActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Context context = null;
+    private Context m_Context = null;
     private Button m_btnOrigin = null;
     private Button m_btnDestination = null;
     private  Button m_btnContinue = null;
@@ -51,7 +47,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve);
 
-        context = this;
+        m_Context = this;
 
         getUIObject();
         getOtherObject();
@@ -108,7 +104,7 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
     {
         if(view == m_btnContinue)
         {
-            startActivity(new Intent(context, BusLayoutActivity.class));
+            startActivity(new Intent(m_Context, BusLayoutActivity.class));
         }
         if(view == m_btnDateChoose)
         {
@@ -192,12 +188,12 @@ public class ReserveActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_reserve, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_reserve, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
